@@ -1,2 +1,4 @@
-deb     http://cdn.debian.net/debian squeeze main contrib non-free
-deb-src http://cdn.debian.net/debian squeeze main contrib non-free
+deb     <%= @mirror %> <%= @distribution %> <%= @components %>
+<% if @use_src -%>
+deb-src <%= @mirror %> <%= @distribution %> <%= @components %>
+<% end -%>
