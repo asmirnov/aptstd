@@ -20,7 +20,9 @@
 default['aptstd']['mirror_main'] = "http://cdn.debian.net/debian"
 default['aptstd']['mirror_archive'] = "http://archive.debian.org/debian"
 default['aptstd']['mirror_security'] = "http://security.debian.org/"
+default['aptstd']['mirror_backports'] = "http://backports.debian.org/debian-backports"
 default['aptstd']['components'] = ['main', 'contrib', 'non-free']
 default['aptstd']['use_security'] = true
 default['aptstd']['use_updates'] = true
+default['aptstd']['use_backports'] = true
 default['aptstd']['use_src'] = true

@@ -38,11 +38,17 @@ if platform_version_major < 6
   mirror_main = node['aptstd']['mirror_archive']
   mirror_security = mirror_main + "-security"
   mirror_updates = mirror_main + "-volatile"
+  mirror_backports = mirror_main + "-backports"
   distribution_updates = codename + "/volatile"
 else
   mirror_main = node['aptstd']['mirror_main']
   mirror_security = node['aptstd']['mirror_security']
   mirror_updates = mirror_main
+  if platform_version_major == 6
+    mirror_backports = node['aptstd']['mirror_backports']
+  else
+    mirror_backports = mirror_main
+  end
   distribution_updates = codename + "-updates"
 end
 
@@ -73,6 +79,17 @@ if node['aptstd']['use_updates']
   apt_repository "debian-updates" do
     uri mirror_updates
     distribution distribution_updates
+    components node['aptstd']['components']
+    if node['aptstd']['use_src']
+      deb_src true
+    end
+  end
+end
+
+if node['aptstd']['use_backports']
+  apt_repository "debian-backports" do
+    uri mirror_backports
+    distribution "#{codename}-backports"
     components node['aptstd']['components']
     if node['aptstd']['use_src']
       deb_src true
