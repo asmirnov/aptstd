@@ -19,8 +19,10 @@
 
 include_recipe "apt"
 
-if node['platform_version'] == "wheezy/sid"
-  platform_version_major = 7
+if node['platform_version'] == "jessie/sid"
+  platform_version_major = 8
+  node.default['aptstd']['use_updates'] = false
+  node.default['aptstd']['use_backports'] = false
 else
   platform_version_major = node['platform_version'].to_i
 end
@@ -32,6 +34,8 @@ when 6
   codename = "squeeze"
 when 7
   codename = "wheezy"
+when 8
+  codename = "jessie"
 end
 
 if platform_version_major < 6
