@@ -50,6 +50,8 @@ else
   mirror_updates = mirror_main
   if platform_version_major == 6
     mirror_backports = node['aptstd']['mirror_backports']
+    distribution_lts = codename + "-lts"
+    mirror_lts = node['aptstd']['mirror_lts']
   else
     mirror_backports = mirror_main
   end
@@ -83,6 +85,17 @@ if node['aptstd']['use_updates']
   apt_repository "debian-updates" do
     uri mirror_updates
     distribution distribution_updates
+    components node['aptstd']['components']
+    if node['aptstd']['use_src']
+      deb_src true
+    end
+  end
+end
+
+if node['aptstd']['use_lts'] and platform_version_major == 6
+  apt_repository "debian-lts" do
+    uri mirror_lts
+    distribution distribution_lts
     components node['aptstd']['components']
     if node['aptstd']['use_src']
       deb_src true
