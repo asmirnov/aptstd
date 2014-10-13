@@ -52,6 +52,7 @@ else
     mirror_backports = node['aptstd']['mirror_backports']
     distribution_lts = codename + "-lts"
     mirror_lts = node['aptstd']['mirror_lts']
+    node.default['aptstd']['use_lts'] = true
   else
     mirror_backports = mirror_main
   end

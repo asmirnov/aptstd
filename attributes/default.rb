@@ -25,6 +25,6 @@ default['aptstd']['mirror_lts'] = "http://http.debian.net/debian/"
 default['aptstd']['components'] = ['main', 'contrib', 'non-free']
 default['aptstd']['use_security'] = true
 default['aptstd']['use_updates'] = true
-default['aptstd']['use_lts'] = true
+default['aptstd']['use_lts'] = false
 default['aptstd']['use_backports'] = true
 default['aptstd']['use_src'] = true
