@@ -49,6 +49,7 @@ else
   mirror_security = node['aptstd']['mirror_security']
   mirror_updates = mirror_main
   if platform_version_major == 6
+    mirror_main = node['aptstd']['mirror_archive']
     mirror_backports = node['aptstd']['mirror_backports']
     distribution_lts = codename + "-lts"
     mirror_lts = node['aptstd']['mirror_lts']
