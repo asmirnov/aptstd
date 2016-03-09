@@ -50,10 +50,12 @@ else
   mirror_updates = mirror_main
   if platform_version_major == 6
     mirror_main = node['aptstd']['mirror_archive']
-    mirror_backports = node['aptstd']['mirror_backports']
+    mirror_backports = mirror_main + "-backports"
+    mirror_security = mirror_main + "-security"
     distribution_lts = codename + "-lts"
-    mirror_lts = node['aptstd']['mirror_lts']
+    mirror_lts = mirror_main
     node.default['aptstd']['use_lts'] = true
+    node.default['aptstd']['use_updates'] = false
   else
     mirror_backports = mirror_main
   end
