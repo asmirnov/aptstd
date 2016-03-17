@@ -62,6 +62,18 @@ else
   distribution_updates = codename + "-updates"
 end
 
+file '/etc/apt/apt.conf.d/10squeeze-archive-fix' do
+  if codename == "squeeze"
+    action :create
+  else
+    action :delete
+  end
+  mode '0644'
+  owner 'root'
+  group 'root'
+  content "Acquire::Check-Valid-Until false;"
+end
+
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
   mode "0644"
@@ -74,46 +86,58 @@ template "/etc/apt/sources.list" do
   notifies :run, resources(:execute => "apt-get update"), :immediately
 end
 
-if node['aptstd']['use_security']
-  apt_repository "debian-security" do
-    uri mirror_security
-    distribution "#{codename}/updates"
-    components node['aptstd']['components']
-    if node['aptstd']['use_src']
-      deb_src true
-    end
+apt_repository "debian-security" do
+  if node['aptstd']['use_security']
+    action :add
+  else
+    action :remove
+  end
+  uri mirror_security
+  distribution "#{codename}/updates"
+  components node['aptstd']['components']
+  if node['aptstd']['use_src']
+    deb_src true
   end
 end
 
-if node['aptstd']['use_updates']
-  apt_repository "debian-updates" do
-    uri mirror_updates
-    distribution distribution_updates
-    components node['aptstd']['components']
-    if node['aptstd']['use_src']
-      deb_src true
-    end
+apt_repository "debian-updates" do
+  if node['aptstd']['use_updates']
+    action :add
+  else
+    action :remove
+  end
+  uri mirror_updates
+  distribution distribution_updates
+  components node['aptstd']['components']
+  if node['aptstd']['use_src']
+    deb_src true
   end
 end
 
-if node['aptstd']['use_lts'] and platform_version_major == 6
-  apt_repository "debian-lts" do
-    uri mirror_lts
-    distribution distribution_lts
-    components node['aptstd']['components']
-    if node['aptstd']['use_src']
-      deb_src true
-    end
+apt_repository "debian-lts" do
+  if node['aptstd']['use_lts'] and platform_version_major == 6
+    action :add
+  else
+    action :remove
+  end
+  uri mirror_lts
+  distribution distribution_lts
+  components node['aptstd']['components']
+  if node['aptstd']['use_src']
+    deb_src true
   end
 end
 
-if node['aptstd']['use_backports']
-  apt_repository "debian-backports" do
-    uri mirror_backports
-    distribution "#{codename}-backports"
-    components node['aptstd']['components']
-    if node['aptstd']['use_src']
-      deb_src true
-    end
+apt_repository "debian-backports" do
+  if node['aptstd']['use_backports']
+    action :add
+  else
+    action :remove
+  end
+  uri mirror_backports
+  distribution "#{codename}-backports"
+  components node['aptstd']['components']
+  if node['aptstd']['use_src']
+    deb_src true
   end
 end
